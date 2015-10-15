@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 
 namespace Sharper.C.Data
@@ -21,14 +22,19 @@ public static class PromiseModule
 
         public Unit Fulfill(A a)
         {
+            Console.WriteLine("outside");
             lock (lockobj)
             {
+                Console.WriteLine("inside");
                 if (!latch.IsSet)
                 {
+                    Console.WriteLine("fulfilling");
                     value = a;
                     latch.Signal();
                 }
+                Console.WriteLine("...inside");
             }
+            Console.WriteLine("...outside");
             return UNIT;
         }
 
@@ -36,7 +42,9 @@ public static class PromiseModule
         {
             get
             {
+                Console.WriteLine("Delay...");
                 latch.Wait();
+                Console.WriteLine("...donE");
                 return value;
             }
         }
