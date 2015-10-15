@@ -1,0 +1,19 @@
+{ "version": "0.1.0-*"
+, "description": "Promises"
+, "authors": [ "Jeremy Hughes" ]
+, "projectUrl": "https://github.com/sharper-library/Sharper.C.Promise"
+, "licenseUrl": "https://raw.githubusercontent.com/sharper-library/Sharper.C.Promise/master/LICENSE.txt"
+
+, "dependencies":
+  { "Sharper.C.Unit": "0.1.0-*"
+  }
+
+, "frameworks":
+  { "dotnet":
+    { "dependencies":
+      { "System.Runtime": "4.0.20"
+      , "System.Threading": "4.0.10"
+      }
+    }
+  }
+}
