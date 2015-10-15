@@ -1,5 +1,4 @@
 using System.Threading;
-using Sharper.C.Data;
 
 namespace Sharper.C.Data
 {
@@ -10,6 +9,7 @@ public static class PromiseModule
 {
     public sealed class Promise<A>
     {
+        private readonly object lockobj = new object();
         private readonly CountdownEvent latch;
         private A value;
 
@@ -21,7 +21,7 @@ public static class PromiseModule
 
         public Unit Fulfill(A a)
         {
-            lock (latch)
+            lock (lockobj)
             {
                 if (!latch.IsSet)
                 {
