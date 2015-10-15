@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 
 namespace Sharper.C.Data
@@ -10,8 +9,6 @@ public static class PromiseModule
 {
     public sealed class Promise<A>
     {
-        private static int id = 0;
-        private readonly int[] lockobj = new[] {id++};
         private readonly CountdownEvent latch;
         private A value;
 
@@ -23,19 +20,14 @@ public static class PromiseModule
 
         public Unit Fulfill(A a)
         {
-            Console.WriteLine($"outside {lockobj[0]}");
-            lock (lockobj)
+            lock (latch)
             {
-                Console.WriteLine($"inside {lockobj[0]}");
                 if (!latch.IsSet)
                 {
-                    Console.WriteLine($"fulfilling {lockobj[0]}");
                     value = a;
                     latch.Signal();
                 }
-                Console.WriteLine($"...inside {lockobj[0]}");
             }
-            Console.WriteLine($"...outside {lockobj[0]}");
             return UNIT;
         }
 
@@ -43,9 +35,7 @@ public static class PromiseModule
         {
             get
             {
-                Console.WriteLine($"Delay... {lockobj[0]}");
                 latch.Wait();
-                Console.WriteLine($"...donE {lockobj[0]}");
                 return value;
             }
         }
